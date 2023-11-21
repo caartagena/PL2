@@ -148,12 +148,12 @@ CREATE TABLE if not exists Peliculas_Intermedio (
     Duracion TEXT
 );
 
-COPY Actores_Intermedio FROM 'actores_peliculas.csv' DELIMITER ',' CSV HEADER;
-COPY Caratulas_Intermedio FROM 'caratulas.csv' DELIMITER ',' CSV HEADER;
-COPY Criticas_Intermedio FROM 'criticas.csv' DELIMITER ',' CSV HEADER;
-COPY Directores_Peliculas_Intermedio FROM 'directores_peliculas.csv' DELIMITER ',' CSV HEADER;
-COPY Guionistas_Peliculas_Intermedio FROM 'guionistas_peliculas.csv' DELIMITER ',' CSV HEADER;
-COPY Peliculas_Intermedio FROM 'peliculas.csv' DELIMITER ',' CSV HEADER;
+COPY Actores_Intermedio FROM 'actores_peliculas.csv' DELIMITER ',';
+COPY Caratulas_Intermedio FROM 'caratulas.csv' DELIMITER ',' ;
+COPY Criticas_Intermedio FROM 'criticas.csv' DELIMITER ',';
+COPY Directores_Peliculas_Intermedio FROM 'directores_peliculas.csv' DELIMITER ',';
+COPY Guionistas_Peliculas_Intermedio FROM 'guionistas_peliculas.csv' DELIMITER ',' ;
+COPY Peliculas_Intermedio FROM 'peliculas.csv' DELIMITER ',' ;
 
 INSERT INTO Actores (Nombre_Actor)
 SELECT Nombre FROM Actores_Intermedio;
