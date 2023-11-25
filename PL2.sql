@@ -1,4 +1,16 @@
--- Crear tablas
+DELETE FROM Actores;
+DELETE FROM Caratulas;
+DELETE FROM Criticas;
+DELETE FROM Directores_Peliculas;
+DELETE FROM Guionistas_Peliculas;
+DELETE FROM Peliculas;
+DELETE FROM Actores_Intermedio;
+DELETE FROM Caratulas_Intermedio;
+DELETE FROM Criticas_Intermedio;
+DELETE FROM Directores_Peliculas_Intermedio;
+DELETE FROM Guionistas_Peliculas_Intermedio;
+DELETE FROM Peliculas_Intermedio;
+
 CREATE TABLE if not exists Personal (
     Nombre VARCHAR(100) PRIMARY KEY,
     Anio_Nacimiento INT,
@@ -90,25 +102,17 @@ CREATE TABLE if not exists Generos (
     FOREIGN KEY (Anio_Pelicula, Titulo_Pelicula) REFERENCES Peliculas(Anio, Titulo)
 );
 
--- Modificar tablas
-ALTER TABLE Criticas
-ADD Anio_Pelicula INT,
-    Titulo_Pelicula VARCHAR(255),
-    URL_PaginaWeb VARCHAR(255),
-    FOREIGN KEY (Titulo_Pelicula) REFERENCES Peliculas(Titulo),
-    FOREIGN KEY (URL_PaginaWeb) REFERENCES PaginaWeb(URL);
 
-ALTER TABLE Peliculas
-ADD Nombre_Directores VARCHAR(255);
+
 
 -- Copiar datos
-CREATE TABLE if not existsActores_Intermedio (
+CREATE TABLE if not exists Actores_Intermedio (
+    Anio_Pelicula TEXT,
+    Titulo_Pelicula TEXT,
     Nombre TEXT,
     Anio_Nacimiento TEXT,
     Anio_Muerte TEXT,
-    Papel TEXT,
-    Titulo_Pelicula TEXT,
-    Anio_Pelicula TEXT
+    Papel TEXT
 );
 
 CREATE TABLE if not exists Caratulas_Intermedio (
@@ -148,12 +152,13 @@ CREATE TABLE if not exists Peliculas_Intermedio (
     Duracion TEXT
 );
 
-COPY Actores_Intermedio FROM 'actores_peliculas.csv' DELIMITER ',' CSV HEADER;
-COPY Caratulas_Intermedio FROM 'caratulas.csv' DELIMITER ',' CSV HEADER;
-COPY Criticas_Intermedio FROM 'criticas.csv' DELIMITER ',' CSV HEADER;
-COPY Directores_Peliculas_Intermedio FROM 'directores_peliculas.csv' DELIMITER ',' CSV HEADER;
-COPY Guionistas_Peliculas_Intermedio FROM 'guionistas_peliculas.csv' DELIMITER ',' CSV HEADER;
-COPY Peliculas_Intermedio FROM 'peliculas.csv' DELIMITER ',' CSV HEADER;
+\COPY Actores_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/actores_peliculas.csv' DELIMITER ',';
+\COPY Caratulas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/caratulas.csv' DELIMITER ',';
+\COPY Criticas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/criticas.csv' DELIMITER ',';
+\COPY Directores_Peliculas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/directores_peliculas.csv' DELIMITER ',';
+\COPY Guionistas_Peliculas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/guionistas_peliculas.csv';
+\COPY Peliculas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/peliculas.csv' DELIMITER ',';
+
 
 INSERT INTO Actores (Nombre_Actor)
 SELECT Nombre FROM Actores_Intermedio;
@@ -174,9 +179,9 @@ INSERT INTO Peliculas (Titulo, Idioma, Calificacion_MPA, Anio, Duracion, Nombre_
 SELECT Titulo, Idioma, Calificacion_MPA, Anio, Duracion, NULL FROM Peliculas_Intermedio;
 
 
-SELECT * FROM Actores_Intermedio LIMIT 5;
-SELECT * FROM Caratulas_Intermedio LIMIT 5;
-SELECT * FROM Criticas_Intermedio LIMIT 5;
-SELECT * FROM Directores_Peliculas_Intermedio LIMIT 5;
-SELECT * FROM Guionistas_Peliculas LIMIT 5;
-SELECT * FROM Peliculas LIMIT 5;
+SELECT * FROM Actores_Intermedio;
+SELECT * FROM Caratulas_Intermedio;
+SELECT * FROM Criticas_Intermedio;
+SELECT * FROM Directores_Peliculas_Intermedio;
+SELECT * FROM Guionistas_Peliculas;
+SELECT * FROM Peliculas;
