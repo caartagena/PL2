@@ -1,8 +1,8 @@
 DELETE FROM Actores;
 DELETE FROM Caratulas;
 DELETE FROM Criticas;
-DELETE FROM Directores_Peliculas;
-DELETE FROM Guionistas_Peliculas;
+DELETE FROM Directores;
+DELETE FROM Guionista;
 DELETE FROM Peliculas;
 DELETE FROM Actores_Intermedio;
 DELETE FROM Caratulas_Intermedio;
@@ -18,15 +18,26 @@ CREATE TABLE if not exists Personal (
 );
 
 CREATE TABLE if not exists Directores (
-    Nombre_Director VARCHAR(100) PRIMARY KEY
+    Nombre_Director VARCHAR(100) PRIMARY KEY,
+    Pelicula VARCHAR(100),
+    Anio_Pelicula INT
 );
+
 
 CREATE TABLE if not exists Actores (
-    Nombre_Actor VARCHAR(100) PRIMARY KEY
+    Nombre_Actor VARCHAR(100) PRIMARY KEY,
+    Titulo_Pelicula VARCHAR(100),
+    Nombre VARCHAR(100),
+    Anio_Nacimiento INT,
+    Anio_Muerte INT,
+    Papel VARCHAR(100)
 );
 
-CREATE TABLE if not exists Guionista (
-    Nombre_Guionista VARCHAR(100) PRIMARY KEY
+
+CREATE TABLE if not exists Guionistas_Peliculas (
+    Nombre_Guionista VARCHAR(100) PRIMARY KEY,
+    Titulo_Pelicula VARCHAR(100),
+    Anio_Pelicula INT
 );
 
 CREATE TABLE if not exists Peliculas (
@@ -98,8 +109,8 @@ CREATE TABLE if not exists Generos (
     Genero VARCHAR(50),
     Anio_Pelicula INT,
     Titulo_Pelicula VARCHAR(255),
-    PRIMARY KEY (Anio_Pelicula, Titulo_Pelicula),
-    FOREIGN KEY (Anio_Pelicula, Titulo_Pelicula) REFERENCES Peliculas(Anio, Titulo)
+    PRIMARY KEY (Titulo_Pelicula),
+    FOREIGN KEY (Titulo_Pelicula) REFERENCES Peliculas(Titulo)
 );
 
 
@@ -116,68 +127,74 @@ CREATE TABLE if not exists Actores_Intermedio (
 );
 
 CREATE TABLE if not exists Caratulas_Intermedio (
-    Tamanio TEXT,
+    Anio_Pelicula TEXT,
     Nombre TEXT,
+    Nombre_Anio TEXT,
     Titulo_Pelicula TEXT,
     URL_PaginaWeb TEXT,
-    Anio_Pelicula TEXT
+    Tamanio TEXT
 );
 
 CREATE TABLE if not exists Criticas_Intermedio (
+    Anio_Pelicula TEXT,
+    Titulo_Pelicula TEXT,
     Critico TEXT,
     Puntuacion TEXT,
     Texto TEXT,
-    Titulo_Pelicula TEXT,
-    Anio_Pelicula TEXT,
     URL_PaginaWeb TEXT
 );
 
 CREATE TABLE if not exists Directores_Peliculas_Intermedio (
-    Nombre_Director TEXT,
+    Anio_Pelicula TEXT,
     Titulo_Pelicula TEXT,
-    Anio_Pelicula TEXT
+    Nombre_Director TEXT,
+    Anio_Nacimiento TEXT,
+    Anio_Muerte TEXT
 );
 
 CREATE TABLE if not exists Guionistas_Peliculas_Intermedio (
-    Nombre_Guionista TEXT,
+    Anio_Pelicula TEXT,
     Titulo_Pelicula TEXT,
-    Anio_Pelicula TEXT
+    Nombre_Director TEXT,
+    Anio_Nacimiento TEXT,
+    Anio_Muerte TEXT    
 );
 
 CREATE TABLE if not exists Peliculas_Intermedio (
-    Titulo TEXT,
-    Idioma TEXT,
-    Calificacion_MPA TEXT,
     Anio TEXT,
-    Duracion TEXT
+    Titulo TEXT,
+    Tipo TEXT,
+    Idioma TEXT,
+    Duracion TEXT,
+    Calificacion_MPA TEXT
 );
+\COPY Actores_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/actores_peliculas.csv' WITH CSV NULL '\N'DELIMITER ',';
+\COPY Caratulas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/caratulas.csv' WITH CSV NULL '\N' DELIMITER ',';
+\COPY Criticas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/criticas.csv' WITH CSV NULL '\N' DELIMITER ',';
+\COPY Directores_Peliculas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/directores_peliculas.csv' WITH CSV NULL '\N' DELIMITER ',';
+\COPY Guionistas_Peliculas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/guionistas_peliculas.csv' WITH CSV NULL '\N' DELIMITER ',';
+\COPY Peliculas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/peliculas.csv' WITH CSV NULL 'NULL' DELIMITER ',';
 
-\COPY Actores_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/actores_peliculas.csv' DELIMITER ',';
-\COPY Caratulas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/caratulas.csv' DELIMITER ',';
-\COPY Criticas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/criticas.csv' DELIMITER ',';
-\COPY Directores_Peliculas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/directores_peliculas.csv' DELIMITER ',';
-\COPY Guionistas_Peliculas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/guionistas_peliculas.csv';
-\COPY Peliculas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/peliculas.csv' DELIMITER ',';
 
+INSERT INTO Actores (Nombre_Actor, Titulo_Pelicula, Anio_Nacimiento, Anio_Muerte, Papel)
+SELECT Nombre, Titulo_Pelicula, CAST(Anio_Nacimiento AS INTEGER), CAST(Anio_Muerte AS INTEGER), Papel FROM Actores_Intermedio;
 
-INSERT INTO Actores (Nombre_Actor)
-SELECT Nombre FROM Actores_Intermedio;
 
 INSERT INTO Caratulas (Tamanio, Nombre, Titulo_Pelicula, URL_PaginaWeb, Anio_Pelicula)
-SELECT Tamanio, Nombre, Titulo_Pelicula, URL_PaginaWeb, Anio_Pelicula FROM Caratulas_Intermedio;
+SELECT CAST(Tamanio AS INTEGER), Nombre, Titulo_Pelicula, URL_PaginaWeb, CAST(Anio_Pelicula AS INTEGER) FROM Caratulas_Intermedio;
 
 INSERT INTO Criticas (Critico, Puntuacion, Texto, Titulo_Pelicula, Anio_Pelicula, URL_PaginaWeb)
-SELECT Critico, Puntuacion, Texto, Titulo_Pelicula, Anio_Pelicula, URL_PaginaWeb FROM Criticas_Intermedio;
+SELECT Critico, CAST(Puntuacion AS INTEGER), Texto, Titulo_Pelicula, CAST(Anio_Pelicula AS INTEGER), URL_PaginaWeb FROM Criticas_Intermedio;
 
-INSERT INTO Directores_Peliculas (Nombre_Director, Titulo_Pelicula, Anio_Pelicula)
-SELECT Nombre_Director, Titulo_Pelicula, Anio_Pelicula FROM Directores_Peliculas_Intermedio;
+INSERT INTO Directores (Nombre_Director, Pelicula, Anio_Pelicula)
+SELECT Nombre_Director, Pelicula, CAST(Anio_Pelicula AS INTEGER) FROM Directores_Peliculas_Intermedio;
+
 
 INSERT INTO Guionistas_Peliculas (Nombre_Guionista, Titulo_Pelicula, Anio_Pelicula)
-SELECT Nombre_Guionista, Titulo_Pelicula, Anio_Pelicula FROM Guionistas_Peliculas_Intermedio;
+SELECT Nombre_Guionista, Titulo_Pelicula, CAST(Anio_Pelicula AS INTEGER) FROM Guionistas_Peliculas_Intermedio;
 
 INSERT INTO Peliculas (Titulo, Idioma, Calificacion_MPA, Anio, Duracion, Nombre_Directores)
-SELECT Titulo, Idioma, Calificacion_MPA, Anio, Duracion, NULL FROM Peliculas_Intermedio;
-
+SELECT Titulo, Idioma, Calificacion_MPA, CAST(Anio AS INTEGER), CAST(Duracion AS INTEGER), NULL FROM Peliculas_Intermedio;
 
 SELECT * FROM Actores_Intermedio;
 SELECT * FROM Caratulas_Intermedio;
