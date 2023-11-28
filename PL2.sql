@@ -29,7 +29,6 @@ CREATE TABLE if not exists Personal (
     Anio_Muerte INT
 );
 
-
 CREATE TABLE IF NOT EXISTS Directores (
     Nombre_Director VARCHAR(100) PRIMARY KEY,
     Titulo_Pelicula VARCHAR(100),
