@@ -217,3 +217,14 @@ SELECT Nombre_Guionista, Titulo_Pelicula, CAST(Anio_Pelicula AS INTEGER) FROM Gu
 INSERT INTO Peliculas (Titulo, Idioma, Calificacion_MPA, Anio, Duracion)
 SELECT Titulo, Idioma, Calificacion_MPA, CAST(Anio AS INTEGER), CAST(Duracion AS INTEGER) FROM Peliculas_Intermedio;
 
+
+SELECT Nombre_Director FROM Directores WHERE Anio_Nacimiento = 1970;
+SELECT Idioma, COUNT(*) AS Num_Peliculas FROM Peliculas GROUP BY Idioma ORDER BY Num_Peliculas DESC;
+SELECT Nombre_Actor, Anio_Nacimiento FROM Actores WHERE Anio_Nacimiento = (SELECT MIN(Anio_Nacimiento) FROM Actores);
+SELECT Nombre, COUNT(*) AS Num_Peliculas FROM Actuan GROUP BY Nombre HAVING COUNT(*) > 1;
+SELECT Genero, COUNT(*) FROM Generos GROUP BY Genero ORDER BY COUNT(*) DESC;
+SELECT DISTINCT G.Nombre FROM Guionistas G JOIN Guionizan Gu ON G.Nombre = Gu.Nombre_Guionista JOIN Géneros Ge ON Gu."Año Película" = Ge."Año Película" AND Gu."Título Película" = Ge."Título Película" WHERE Ge.Género IN ('Deportes', 'Cine Negro');
+SELECT Nombre_Actor, Papel, Titulo, Anio, Idioma, Duracion FROM Actores, Peliculas WHERE Idioma = 'Japanese' AND Duracion < 100 AND Anio_Nacimiento < 1960;
+SELECT P.Título, P.Año, P.Idioma, P.Duración, P.Calificación, COUNT(C.Nombre) AS Num_Caratulas FROM Películas P JOIN Carátulas C ON P.Título = C.Título_Película AND P.Año = C."Año Película" GROUP BY P.Título, P.Año, P.Idioma, P.Duración, P.Calificación HAVING COUNT(C.Nombre) >= 2;
+SELECT Titulo, Anio_Pelicula, AVG(Puntuacion) FROM Criticas GROUP BY Titulo, Anio_Pelicula ORDER BY AVG(Puntuacion) DESC LIMIT 3;
+SELECT G.Género, AVG(C.Puntuación) AS Puntuación_Media FROM Géneros G JOIN Críticas C ON G."Título Película" = C."Título Película" AND G."Año Película" = C."Año Película" GROUP BY G.Género ORDER BY Puntuación_Media ASC LIMIT 1;
