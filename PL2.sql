@@ -185,6 +185,7 @@ CREATE TABLE if not exists Peliculas_Intermedio (
     Calificacion_MPA TEXT
 );
 
+
 \COPY Actores_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/actores_peliculas.csv' WITH CSV DELIMITER E'\t';
 \COPY Caratulas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/caratulas.csv' WITH CSV DELIMITER E'\t';
 \COPY Criticas_Intermedio FROM '/Users/juancartagena/Desktop/Uah/Bases_Datos/Laboratorio/criticas.csv' WITH CSV DELIMITER E'\t';
